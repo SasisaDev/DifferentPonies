@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "differentponies",
+  "version": "${version}",
+  "name": "differentponies",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/SasisaDev/DifferentPonies"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/differentponies/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ru.sasisa.differentponies.Differentponies"
+    ],
+    "client": [
+      "ru.sasisa.differentponies.client.DifferentponiesClient"
+    ],
+    "server": [
+      "ru.sasisa.differentponies.server.DifferentponiesServer"
+    ]
+  },
+  "mixins": [
+    "client.mixins.json",
+    "server.mixins.json",
+    "common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
