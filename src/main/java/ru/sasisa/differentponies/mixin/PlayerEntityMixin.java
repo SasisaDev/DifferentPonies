@@ -1,14 +1,24 @@
 package ru.sasisa.differentponies.mixin;
 
+import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.FoodComponent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.sasisa.differentponies.api.Race;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
 import ru.sasisa.differentponies.api.ability.RaceAbilitySet;
@@ -45,6 +55,22 @@ public class PlayerEntityMixin implements IPlayerEntityMixin {
         {
             ability.OnEnchantedItem((PlayerEntity)(Object)this, enchantedItem, experienceLevels);
         }
+    }
+
+    @Inject(method="eatFood(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", at = @At("HEAD"))
+    public void onEatFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> cir)
+    {
+        PlayerEntity player = (PlayerEntity)(Object)this;
+
+        float mod = 1;
+
+        for(PassiveAbility ability : GetAbilitySet().Passives)
+        {
+            mod *= ability.GetFoodModifier(stack);
+        }
+
+        FoodComponent food = stack.getItem().getFoodComponent();
+        player.getHungerManager().add((int)((float)food.getHunger() * mod), food.getSaturationModifier());
     }
 
     @Inject(method="tick()V", at = @At("HEAD"))
@@ -84,7 +110,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin {
         }
 
         ((PlayerEntity)(Object)this).getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)
-                .setBaseValue(((PlayerEntity)(Object)this).getMaxHealth() * healthModifier);
+                .setBaseValue(20 * healthModifier);
     }
 
     @Override

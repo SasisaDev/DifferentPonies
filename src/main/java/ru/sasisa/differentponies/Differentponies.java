@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Material;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import ru.sasisa.differentponies.abilities.*;
@@ -91,7 +92,7 @@ public class Differentponies implements ModInitializer {
                     // Actives
                     List.of(),
                     // Passives
-                    List.of());
+                    List.of(new AbilityPassiveFoodModifier(2.0F, (food)->{return food.isOf(Items.APPLE);})));
         });
 
         manager.BindAbilitySet(Race.CHANGLING, () -> {

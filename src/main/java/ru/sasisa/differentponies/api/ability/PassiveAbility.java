@@ -21,8 +21,14 @@ public class PassiveAbility {
     public float GetHealthModifier() {
         return 1;
     }
+
+    public float GetFoodModifier(ItemStack stack) {
+        return 1;
+    }
+
     public float GetDealtDamageModifier(PlayerEntity player, LivingEntity mob, DamageSource source, float damage) {
         return 1;
+
     }
     public float GetIncomingDamageModifier() {
         return 1;

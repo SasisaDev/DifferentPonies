@@ -52,7 +52,7 @@ public class CloudBlock extends Block implements FluidDrainable {
         {
             return;
         }
-        
+
         if (!(entity instanceof LivingEntity) || entity.getBlockStateAtPos().isOf(this)) {
             entity.slowMovement(state, new Vec3d(0.8999999761581421, 1.5, 0.8999999761581421));
             if (world.isClient) {
