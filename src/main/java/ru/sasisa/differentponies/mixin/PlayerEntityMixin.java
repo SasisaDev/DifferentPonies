@@ -1,5 +1,7 @@
 package ru.sasisa.differentponies.mixin;
 
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -63,6 +65,16 @@ public class PlayerEntityMixin implements IPlayerEntityMixin {
     @Override
     public void SetAbilitySet(RaceAbilitySet set) {
         abilities = set;
+
+        float healthModifier = 1;
+
+        for(PassiveAbility ability : abilities.Passives)
+        {
+            healthModifier *= ability.GetHealthModifier();
+        }
+
+        ((PlayerEntity)(Object)this).getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)
+                .setBaseValue(((PlayerEntity)(Object)this).getMaxHealth() * healthModifier);
     }
 
     @Override
