@@ -47,6 +47,16 @@ public class PlayerEntityMixin implements IPlayerEntityMixin {
         }
     }
 
+    @Inject(method="tick()V", at = @At("HEAD"))
+    public void onTick(CallbackInfo ci)
+    {
+        if(abilities != null) {
+            for (PassiveAbility ability : abilities.Passives) {
+                ability.Tick((PlayerEntity) (Object) this);
+            }
+        }
+    }
+
     @Override
     public Race GetRace() {
         return race;
@@ -101,5 +111,17 @@ public class PlayerEntityMixin implements IPlayerEntityMixin {
             player.addExperienceLevels(1);
             player.experienceProgress /= (float)player.getNextLevelExperience();
         }
+    }
+
+    @Override
+    public boolean HasWings() {
+        if(race == Race.BAT || race == Race.ALICORN || race == Race.PEGASUS) {
+            return true;
+        } else if(race == Race.CHANGLING || race == Race.GOOD_CHANGLING)
+        {
+            // TODO morphing
+            return true;
+        }
+        return false;
     }
 }

@@ -12,4 +12,6 @@ public interface IPlayerEntityMixin {
     public void SetAbilitySet(RaceAbilitySet set);
 
     public void AddExperienceUnhooked(int experience);
+
+    public boolean HasWings();
 }

@@ -1,4 +1,4 @@
-package ru.sasisa.differentponies.abilities.earth;
+package ru.sasisa.differentponies.abilities;
 
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
 

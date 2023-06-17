@@ -21,6 +21,8 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.*;
+import ru.sasisa.differentponies.api.Race;
+import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 import java.util.Optional;
 
@@ -46,6 +48,11 @@ public class CloudBlock extends Block implements FluidDrainable {
     }
 
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+        if(canWalkOnPowderSnow(entity))
+        {
+            return;
+        }
+        
         if (!(entity instanceof LivingEntity) || entity.getBlockStateAtPos().isOf(this)) {
             entity.slowMovement(state, new Vec3d(0.8999999761581421, 1.5, 0.8999999761581421));
             if (world.isClient) {
@@ -99,11 +106,16 @@ public class CloudBlock extends Block implements FluidDrainable {
     }
 
     public static boolean canWalkOnPowderSnow(Entity entity) {
-        if (entity.getType().isIn(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS)) {
-            return true;
-        } else {
-            return entity instanceof LivingEntity ? ((LivingEntity)entity).getEquippedStack(EquipmentSlot.FEET).isOf(Items.LEATHER_BOOTS) : false;
+        if(entity instanceof PlayerEntity)
+        {
+            IPlayerEntityMixin player = ((IPlayerEntityMixin)(Object)entity);
+
+            if(player.HasWings())
+            {
+                return true;
+            }
         }
+        return false;
     }
 
     public ItemStack tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
