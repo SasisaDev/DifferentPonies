@@ -27,6 +27,9 @@ public class Differentponies implements ModInitializer {
         Registry.register(Registry.BLOCK, new Identifier("differentponies", "cloud"), CLOUD_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("differentponies", "cloud"), new BlockItem(CLOUD_BLOCK, new FabricItemSettings()));
 
+        // To not get crashes
+        manager.BindAbilitySet(Race.NONE, () -> {return new RaceAbilitySet(List.of(), List.of());});
+
         manager.BindAbilitySet(Race.UNICORN, () -> {
             return new RaceAbilitySet(
                     // Actives
@@ -44,6 +47,7 @@ public class Differentponies implements ModInitializer {
                     List.of(),
                     // Passives
                     List.of(new AbilityPassiveHealthModifier(1.5F),
+                            new AbilityPassiveHarvestModifier(2F, 15),
                             new AbilityPassiveMobDamage(1.1F, (mob)-> {return mob.getGroup() == EntityGroup.DEFAULT || mob.getGroup() == EntityGroup.AQUATIC;})));
         });
 

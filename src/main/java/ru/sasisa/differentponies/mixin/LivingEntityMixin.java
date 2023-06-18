@@ -16,7 +16,7 @@ public class LivingEntityMixin {
     @Inject(method = "modifyAppliedDamage(Lnet/minecraft/entity/damage/DamageSource;F)F", at = @At("TAIL"), cancellable = true)
     public void modifyAppliedDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> cir)
     {
-        float mod = 0;
+        float mod = 1;
 
         if(source.getAttacker() != null)
         {

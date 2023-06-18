@@ -1,9 +1,11 @@
 package ru.sasisa.differentponies.api.ability;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class PassiveAbility {
 
@@ -21,6 +23,8 @@ public class PassiveAbility {
     public float GetHealthModifier() {
         return 1;
     }
+
+    public float GetDropModifier(ItemStack stack, @Nullable BlockState blockState){ return 1; }
 
     public float GetFoodModifier(ItemStack stack) {
         return 1;

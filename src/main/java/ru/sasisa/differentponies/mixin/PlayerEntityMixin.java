@@ -35,7 +35,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin {
     @Inject(method = "addExperience(I)V", at = @At("HEAD"))
     public void customAddExperience(int experience, CallbackInfo ci)
     {
-        abilities.Passives.forEach((el)->{ el.OnGetExperience(((PlayerEntity)(Object)this), experience);});
+        abilities.Passives.forEach((el) -> {el.OnGetExperience(((PlayerEntity) (Object) this), experience);});
     }
 
     @Inject(method="applyEnchantmentCosts", at = @At("HEAD"))
@@ -68,6 +68,8 @@ public class PlayerEntityMixin implements IPlayerEntityMixin {
         {
             mod *= ability.GetFoodModifier(stack);
         }
+
+        mod -= 1;
 
         FoodComponent food = stack.getItem().getFoodComponent();
         player.getHungerManager().add((int)((float)food.getHunger() * mod), food.getSaturationModifier());
