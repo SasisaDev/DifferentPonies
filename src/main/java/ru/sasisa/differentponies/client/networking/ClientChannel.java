@@ -12,10 +12,12 @@ public class ClientChannel {
     static public void Bootstrap()
     {
         ClientPlayNetworking.registerGlobalReceiver(ChannelConstants.S2C_SEND_RACE_PACKET_ID, (client, handler, buf, responseSender) -> {
+            int race = buf.readInt();
+
             client.execute(() -> {
                 if(client.player == null) { return; }
 
-                ((IPlayerEntityMixin)client.player).SetRace(Utils.RaceFromInt(buf.getInt(0)));
+                ((IPlayerEntityMixin)client.player).SetRace(Utils.RaceFromInt(race));
 
                 Differentponies.manager.RegisterPlayer(client.player);
             });

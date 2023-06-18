@@ -1,6 +1,8 @@
 package ru.sasisa.differentponies.mixin;
 
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -11,12 +13,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.sasisa.differentponies.api.Race;
@@ -32,6 +36,24 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
 
     private Race race = Race.NONE;
     private RaceAbilitySet abilities = null;
+
+    @ModifyVariable(method= "getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F", at = @At(value = "TAIL"))
+    public float customBlockBreakingSpeed(float f)
+    {
+        PlayerEntity player = (PlayerEntity)(Object)this;
+
+        if(race == Race.SEA) {
+            if (player.isSubmergedIn(FluidTags.WATER) && !EnchantmentHelper.hasAquaAffinity(player)) {
+                f *= 5.0F;
+            }
+
+            if (!player.isOnGround()) {
+                f *= 5.0F;
+            }
+        }
+
+        return f;
+    }
 
     @Inject(method = "addExperience(I)V", at = @At("HEAD"))
     public void customAddExperience(int experience, CallbackInfo ci)

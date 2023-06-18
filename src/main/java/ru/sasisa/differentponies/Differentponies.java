@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.item.BlockItem;
@@ -81,7 +82,8 @@ public class Differentponies implements ModInitializer {
                     // Actives
                     List.of(),
                     // Passives
-                    List.of(new AbilityPassiveHealthModifier(0.9F)));
+                    List.of(new AbilityPassiveHealthModifier(0.9F),
+                            new AbilityPassiveUnderwater()));
         });
 
         manager.BindAbilitySet(Race.KIRIN, () -> {

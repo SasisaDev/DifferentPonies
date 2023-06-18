@@ -33,7 +33,7 @@ public class DifferentponiesServer implements DedicatedServerModInitializer {
                     Differentponies.manager.RegisterPlayer(handler.player);
 
                     PacketByteBuf buf = PacketByteBufs.create();
-                    buf.setInt(0, Utils.IntFromRace(race));
+                    buf.writeInt(Utils.IntFromRace(race));
 
                     LOGGER.info("Joined player race is: " + String.valueOf(Utils.IntFromRace(race)));
 
