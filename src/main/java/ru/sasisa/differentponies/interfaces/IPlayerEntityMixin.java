@@ -13,5 +13,4 @@ public interface IPlayerEntityMixin {
 
     public void AddExperienceUnhooked(int experience);
 
-    public boolean HasWings();
 }

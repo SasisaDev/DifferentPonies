@@ -22,12 +22,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.sasisa.differentponies.api.Race;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
 import ru.sasisa.differentponies.api.ability.RaceAbilitySet;
+import ru.sasisa.differentponies.api.clouds.ICloudsWalkable;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin implements IPlayerEntityMixin {
+public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
 
     private Race race = Race.NONE;
     private RaceAbilitySet abilities = null;
@@ -142,7 +143,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin {
     }
 
     @Override
-    public boolean HasWings() {
+    public boolean CanWalkOnClouds() {
         if(race == Race.BAT || race == Race.ALICORN || race == Race.PEGASUS) {
             return true;
         } else if(race == Race.CHANGLING || race == Race.GOOD_CHANGLING)

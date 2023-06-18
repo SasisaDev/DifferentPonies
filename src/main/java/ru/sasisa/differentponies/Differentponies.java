@@ -3,6 +3,7 @@ package ru.sasisa.differentponies;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Material;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.item.BlockItem;
@@ -20,7 +21,7 @@ import java.util.List;
 public class Differentponies implements ModInitializer {
     public static AbilityManager manager = new AbilityManager();
 
-    public static final CloudBlock CLOUD_BLOCK = new CloudBlock(FabricBlockSettings.of(Material.POWDER_SNOW).strength(1.0f));
+    public static final CloudBlock CLOUD_BLOCK = new CloudBlock(FabricBlockSettings.of(Material.POWDER_SNOW).strength(0.2f).dynamicBounds());
 
     @Override
     public void onInitialize() {

@@ -2,7 +2,6 @@ package ru.sasisa.differentponies.block;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
@@ -12,7 +11,6 @@ import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.tag.EntityTypeTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -21,7 +19,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.*;
-import ru.sasisa.differentponies.api.Race;
+import ru.sasisa.differentponies.api.clouds.ICloudsWalkable;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 import java.util.Optional;
@@ -31,6 +29,7 @@ public class CloudBlock extends Block implements FluidDrainable {
     private static final float HORIZONTAL_MOVEMENT_MULTIPLIER = 0.9F;
     private static final float VERTICAL_MOVEMENT_MULTIPLIER = 1.5F;
     private static final float field_31219 = 2.5F;
+    private static final VoxelShape FULL_SHAPE = VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 1, 1.0);
     private static final VoxelShape FALLING_SHAPE = VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 0.8999999761581421, 1.0);
     private static final double field_36189 = 4.0;
     private static final double SMALL_FALL_SOUND_MAX_DISTANCE = 7.0;
@@ -48,11 +47,6 @@ public class CloudBlock extends Block implements FluidDrainable {
     }
 
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        if(canWalkOnPowderSnow(entity))
-        {
-            return;
-        }
-
         if (!(entity instanceof LivingEntity) || entity.getBlockStateAtPos().isOf(this)) {
             entity.slowMovement(state, new Vec3d(0.8999999761581421, 1.5, 0.8999999761581421));
             if (world.isClient) {
@@ -87,12 +81,8 @@ public class CloudBlock extends Block implements FluidDrainable {
         if (context instanceof EntityShapeContext entityShapeContext) {
             Entity entity = entityShapeContext.getEntity();
             if (entity != null) {
-                if (entity.fallDistance > 2.5F) {
-                    return FALLING_SHAPE;
-                }
-
                 boolean bl = entity instanceof FallingBlockEntity;
-                if (bl || canWalkOnPowderSnow(entity) && context.isAbove(VoxelShapes.fullCube(), pos, false) && !context.isDescending()) {
+                if (bl || canWalkOnCloud(entity)) {
                     return super.getCollisionShape(state, world, pos, context);
                 }
             }
@@ -105,15 +95,10 @@ public class CloudBlock extends Block implements FluidDrainable {
         return VoxelShapes.empty();
     }
 
-    public static boolean canWalkOnPowderSnow(Entity entity) {
-        if(entity instanceof PlayerEntity)
+    public static boolean canWalkOnCloud(Entity entity) {
+        if(entity instanceof ICloudsWalkable subject)
         {
-            IPlayerEntityMixin player = ((IPlayerEntityMixin)(Object)entity);
-
-            if(player.HasWings())
-            {
-                return true;
-            }
+            return subject.CanWalkOnClouds();
         }
         return false;
     }
