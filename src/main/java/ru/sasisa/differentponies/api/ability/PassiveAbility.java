@@ -1,6 +1,7 @@
 package ru.sasisa.differentponies.api.ability;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,9 +15,20 @@ public class PassiveAbility {
 
     }
 
+    public void OnInitialization(PlayerEntity player)
+    {
+
+    }
+
+    public void ClientMovementTick(ClientPlayerEntity player){}
+
     public void Tick(PlayerEntity player) {}
 
     public float GetEnchantmentCostModifier() {
+        return 1;
+    }
+
+    public float GetFlySpeedModifier() {
         return 1;
     }
 

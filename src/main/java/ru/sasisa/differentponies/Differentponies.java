@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
@@ -16,6 +17,7 @@ import ru.sasisa.differentponies.api.Race;
 import ru.sasisa.differentponies.api.ability.AbilityManager;
 import ru.sasisa.differentponies.api.ability.RaceAbilitySet;
 import ru.sasisa.differentponies.block.CloudBlock;
+import ru.sasisa.differentponies.enchantment.EarthAffinityEnchantment;
 
 import java.util.List;
 
@@ -24,8 +26,12 @@ public class Differentponies implements ModInitializer {
 
     public static final CloudBlock CLOUD_BLOCK = new CloudBlock(FabricBlockSettings.of(Material.POWDER_SNOW).strength(0.2f).dynamicBounds());
 
+    public static final Enchantment EARTH_AFFINITY = new EarthAffinityEnchantment();
+
     @Override
     public void onInitialize() {
+        Registry.register(Registry.ENCHANTMENT, new Identifier("differentponies", "earth_affinity"), EARTH_AFFINITY);
+
         Registry.register(Registry.BLOCK, new Identifier("differentponies", "cloud"), CLOUD_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("differentponies", "cloud"), new BlockItem(CLOUD_BLOCK, new FabricItemSettings()));
 
@@ -58,7 +64,8 @@ public class Differentponies implements ModInitializer {
                     // Actives
                     List.of(),
                     // Passives
-                    List.of());
+                    List.of(new AbilityPassiveFlySpeedModifier(2.0F),
+                            new AbilityPassiveFly()));
         });
 
         manager.BindAbilitySet(Race.ALICORN, () -> {

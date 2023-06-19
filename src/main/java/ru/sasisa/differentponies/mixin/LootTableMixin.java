@@ -41,7 +41,7 @@ public class LootTableMixin {
                         modifier *= ability.GetDropModifier(stack, blockState);
                     }
 
-                    stack.increment((int) Math.ceil((float) stack.getCount() * modifier));
+                    stack.setCount((int) Math.ceil((float) stack.getCount() * modifier));
                 }
             }
         }

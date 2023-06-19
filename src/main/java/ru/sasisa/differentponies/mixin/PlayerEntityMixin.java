@@ -1,54 +1,46 @@
 package ru.sasisa.differentponies.mixin;
 
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import ru.sasisa.differentponies.Differentponies;
 import ru.sasisa.differentponies.api.Race;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
 import ru.sasisa.differentponies.api.ability.RaceAbilitySet;
 import ru.sasisa.differentponies.api.clouds.ICloudsWalkable;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
 
     private Race race = Race.NONE;
-    private RaceAbilitySet abilities = null;
+    private RaceAbilitySet pony_abilities = null;
 
-    @ModifyVariable(method= "getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F", at = @At(value = "TAIL"))
+    @ModifyVariable(method= "getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F", at = @At(value = "RETURN", shift = At.Shift.BEFORE))
     public float customBlockBreakingSpeed(float f)
     {
         PlayerEntity player = (PlayerEntity)(Object)this;
 
         if(race == Race.SEA) {
-            if (player.isSubmergedIn(FluidTags.WATER) && !EnchantmentHelper.hasAquaAffinity(player)) {
+            if (player.isSubmergedIn(FluidTags.WATER)) {
                 f *= 5.0F;
-            }
 
-            if (!player.isOnGround()) {
-                f *= 5.0F;
+                if (!player.isOnGround()) {
+                    f *= 5.0F;
+                }
+            } else if (EnchantmentHelper.getEquipmentLevel(Differentponies.EARTH_AFFINITY, player) <= 0){
+                f /= 2.0F;
             }
         }
 
@@ -58,7 +50,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
     @Inject(method = "addExperience(I)V", at = @At("HEAD"))
     public void customAddExperience(int experience, CallbackInfo ci)
     {
-        abilities.Passives.forEach((el) -> {el.OnGetExperience(((PlayerEntity) (Object) this), experience);});
+        pony_abilities.Passives.forEach((el) -> {el.OnGetExperience(((PlayerEntity) (Object) this), experience);});
     }
 
     @Inject(method="applyEnchantmentCosts", at = @At("HEAD"))
@@ -67,14 +59,14 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
         // TODO Doesn't seem to work
         float modifier = 1;
 
-        for(PassiveAbility ability : abilities.Passives)
+        for(PassiveAbility ability : pony_abilities.Passives)
         {
             modifier *= ability.GetEnchantmentCostModifier();
         }
 
         experienceLevels = (int)((float)experienceLevels * modifier);
 
-        for(PassiveAbility ability : abilities.Passives)
+        for(PassiveAbility ability : pony_abilities.Passives)
         {
             ability.OnEnchantedItem((PlayerEntity)(Object)this, enchantedItem, experienceLevels);
         }
@@ -101,8 +93,8 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
     @Inject(method="tick()V", at = @At("HEAD"))
     public void onTick(CallbackInfo ci)
     {
-        if(abilities != null) {
-            for (PassiveAbility ability : abilities.Passives) {
+        if(pony_abilities != null) {
+            for (PassiveAbility ability : pony_abilities.Passives) {
                 ability.Tick((PlayerEntity) (Object) this);
             }
         }
@@ -120,22 +112,26 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
 
     @Override
     public RaceAbilitySet GetAbilitySet() {
-        return abilities;
+        return pony_abilities;
     }
 
     @Override
     public void SetAbilitySet(RaceAbilitySet set) {
-        abilities = set;
+        pony_abilities = set;
 
         float healthModifier = 1;
+        float flySpeedModifier = 1;
 
-        for(PassiveAbility ability : abilities.Passives)
+        for(PassiveAbility ability : pony_abilities.Passives)
         {
             healthModifier *= ability.GetHealthModifier();
+            flySpeedModifier *= ability.GetFlySpeedModifier();
+
+            ability.OnInitialization((PlayerEntity)(Object)this);
         }
 
-        ((PlayerEntity)(Object)this).getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)
-                .setBaseValue(20 * healthModifier);
+        ((PlayerEntity)(Object)this).getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(20 * healthModifier);
+        ((PlayerEntity)(Object)this).getAbilities().setFlySpeed(((PlayerEntity)(Object)this).getAbilities().getFlySpeed() * flySpeedModifier);
     }
 
     @Override
