@@ -49,9 +49,6 @@ public class Utils {
                 case "ponyraces.batpony" -> {
                     return Race.BAT;
                 }
-                default -> {
-                    return Race.NONE;
-                }
             }
         }
 
