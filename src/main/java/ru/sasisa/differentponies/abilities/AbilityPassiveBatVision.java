@@ -12,7 +12,9 @@ public class AbilityPassiveBatVision extends PassiveAbility {
     public void Tick(PlayerEntity player)
     {
         if (!player.world.isClient) {
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 2*20, 6));
+            if(!player.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 999 * 20, 6));
+            }
         }
     }
 }
