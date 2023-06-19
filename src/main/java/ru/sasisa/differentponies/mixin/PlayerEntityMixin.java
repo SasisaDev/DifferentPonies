@@ -66,10 +66,9 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
         pony_abilities.Passives.forEach((el) -> {el.OnGetExperience(((PlayerEntity) (Object) this), experience);});
     }
 
-    @Inject(method="applyEnchantmentCosts", at = @At("HEAD"))
-    public void modifyEnchantmentCost(ItemStack enchantedItem, int experienceLevels, CallbackInfo ci)
+    @ModifyVariable(method= "applyEnchantmentCosts(Lnet/minecraft/item/ItemStack;I)V", at = @At("HEAD"), argsOnly = true)
+    public int modifyEnchantmentCost(int experienceLevels)
     {
-        // TODO Doesn't seem to work
         float modifier = 1;
 
         for(PassiveAbility ability : pony_abilities.Passives)
@@ -77,8 +76,12 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
             modifier *= ability.GetEnchantmentCostModifier();
         }
 
-        experienceLevels = (int)((float)experienceLevels * modifier);
+        return (int)((float)experienceLevels * modifier);
+    }
 
+    @Inject(method= "applyEnchantmentCosts(Lnet/minecraft/item/ItemStack;I)V", at = @At("TAIL"))
+    public void onEnchantedItem(ItemStack enchantedItem, int experienceLevels, CallbackInfo ci)
+    {
         for(PassiveAbility ability : pony_abilities.Passives)
         {
             ability.OnEnchantedItem((PlayerEntity)(Object)this, enchantedItem, experienceLevels);

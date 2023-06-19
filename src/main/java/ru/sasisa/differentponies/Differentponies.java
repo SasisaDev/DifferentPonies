@@ -45,7 +45,7 @@ public class Differentponies implements ModInitializer {
                     List.of(),
                     // Passives
                     List.of(new AbilityPassiveXPBonus(0.3F),
-                            new AbilityPassiveEnchantmentDiscount(0),
+                            new AbilityPassiveEnchantmentCostModifier(0.7F),
                             new AbilityPassiveHealthModifier(0.8F),
                             new AbilityPassiveUnionPower()));
         });
