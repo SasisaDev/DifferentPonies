@@ -3,11 +3,12 @@ package ru.sasisa.differentponies;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -68,6 +69,16 @@ public class Differentponies implements ModInitializer {
                             new AbilityPassiveFly()));
         });
 
+        manager.BindAbilitySet(Race.GRIFFON, () -> {
+            return new RaceAbilitySet(
+                    // Actives
+                    List.of(),
+                    // Passives
+                    List.of(new AbilityPassiveFlySpeedModifier(2.0F),
+                            new AbilityPassiveFly(),
+                            new AbilityPassiveFoodEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 10*20, 1), List.of(Items.BEEF, Items.PORKCHOP, Items.CHICKEN, Items.MUTTON, Items.RABBIT, Items.SALMON, Items.COD))));
+        });
+
         manager.BindAbilitySet(Race.ALICORN, () -> {
             return new RaceAbilitySet(
                     // Actives
@@ -81,7 +92,8 @@ public class Differentponies implements ModInitializer {
                     // Actives
                     List.of(),
                     // Passives
-                    List.of(new AbilityPassiveHealthModifier(0.9F)));
+                    List.of(new AbilityPassiveHealthModifier(0.9F),
+                            new AbilityPassiveXPBonus(1.5F)));
         });
 
         manager.BindAbilitySet(Race.SEA, () -> {
@@ -106,7 +118,10 @@ public class Differentponies implements ModInitializer {
                     // Actives
                     List.of(),
                     // Passives
-                    List.of(new AbilityPassiveFoodModifier(2.0F, (food)->{return food.isOf(Items.APPLE);})));
+                    List.of(new AbilityPassiveFoodModifier(2.0F, (food)->{return food.isOf(Items.APPLE);}),
+                            new AbilityPassiveFly(),
+                            new AbilityPassiveBatVision(),
+                            new AbilityPassiveMobDamage(1.2F, (mob) -> {return !(mob instanceof PlayerEntity);})));
         });
 
         manager.BindAbilitySet(Race.CHANGLING, () -> {
@@ -114,7 +129,9 @@ public class Differentponies implements ModInitializer {
                     // Actives
                     List.of(),
                     // Passives
-                    List.of(new AbilityPassiveHealthModifier(0.7F)));
+                    List.of(new AbilityPassiveHealthModifier(0.7F),
+                            new AbilityPassiveFly(),
+                            new AbilityPassiveFlySpeedModifier(0.5F)));
         });
 
         manager.BindAbilitySet(Race.GOOD_CHANGLING, () -> {
@@ -122,7 +139,9 @@ public class Differentponies implements ModInitializer {
                     // Actives
                     List.of(),
                     // Passives
-                    List.of(new AbilityPassiveHealthModifier(0.75F)));
+                    List.of(new AbilityPassiveHealthModifier(0.75F),
+                            new AbilityPassiveFly(),
+                            new AbilityPassiveFlySpeedModifier(0.5F)));
         });
     }
 }

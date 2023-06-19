@@ -58,4 +58,9 @@ public class PassiveAbility {
     {
 
     }
+
+    public void OnEatFood(PlayerEntity player, ItemStack food)
+    {
+
+    }
 }

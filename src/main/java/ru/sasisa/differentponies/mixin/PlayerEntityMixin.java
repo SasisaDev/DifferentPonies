@@ -43,6 +43,19 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
                 f /= 2.0F;
             }
         }
+        else if(race == Race.ALICORN)
+        {
+            if (!player.isSubmergedIn(FluidTags.WATER) && !player.isOnGround()) {
+                f *= 5.0F;
+            }
+        }
+        else if(race == Race.PEGASUS)
+        {
+            if(!player.isSubmergedIn(FluidTags.WATER))
+            {
+                f /= 1.5F;
+            }
+        }
 
         return f;
     }
@@ -82,6 +95,8 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
         for(PassiveAbility ability : GetAbilitySet().Passives)
         {
             mod *= ability.GetFoodModifier(stack);
+
+            ability.OnEatFood(player, stack);
         }
 
         mod -= 1;
