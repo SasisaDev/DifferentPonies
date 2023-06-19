@@ -1,4 +1,4 @@
-package ru.sasisa.differentponies.api.clouds;
+package ru.sasisa.differentponies.api.interfaces;
 
 public interface ICloudsWalkable {
 

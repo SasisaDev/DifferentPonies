@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +19,7 @@ import ru.sasisa.differentponies.api.Race;
 import ru.sasisa.differentponies.api.ability.AbilityManager;
 import ru.sasisa.differentponies.api.ability.RaceAbilitySet;
 import ru.sasisa.differentponies.block.CloudBlock;
+import ru.sasisa.differentponies.effect.DrainEnergyEffect;
 import ru.sasisa.differentponies.enchantment.EarthAffinityEnchantment;
 
 import java.util.List;
@@ -29,8 +31,12 @@ public class Differentponies implements ModInitializer {
 
     public static final Enchantment EARTH_AFFINITY = new EarthAffinityEnchantment();
 
+    public static final StatusEffect DRAIN_ENERGY = new DrainEnergyEffect();
+
     @Override
     public void onInitialize() {
+        Registry.register(Registry.STATUS_EFFECT, new Identifier("differentponies", "drain_energy"), DRAIN_ENERGY);
+
         Registry.register(Registry.ENCHANTMENT, new Identifier("differentponies", "earth_affinity"), EARTH_AFFINITY);
 
         Registry.register(Registry.BLOCK, new Identifier("differentponies", "cloud"), CLOUD_BLOCK);
@@ -66,7 +72,8 @@ public class Differentponies implements ModInitializer {
                     List.of(),
                     // Passives
                     List.of(new AbilityPassiveFlySpeedModifier(2.0F),
-                            new AbilityPassiveFly()));
+                            new AbilityPassiveFly(),
+                            new AbilityPassiveSetEnergy(10 * 20)));
         });
 
         manager.BindAbilitySet(Race.GRIFFON, () -> {
@@ -76,6 +83,7 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveFlySpeedModifier(2.0F),
                             new AbilityPassiveFly(),
+                            new AbilityPassiveSetEnergy(10 * 20),
                             new AbilityPassiveFoodEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 10*20, 1), List.of(Items.BEEF, Items.PORKCHOP, Items.CHICKEN, Items.MUTTON, Items.RABBIT, Items.SALMON, Items.COD))));
         });
 
@@ -84,7 +92,9 @@ public class Differentponies implements ModInitializer {
                     // Actives
                     List.of(),
                     // Passives
-                    List.of(new AbilityPassiveHealthModifier(1.25F)));
+                    List.of(new AbilityPassiveHealthModifier(1.25F),
+                            new AbilityPassiveFly(),
+                            new AbilityPassiveSetEnergy(10 * 20)));
         });
 
         manager.BindAbilitySet(Race.ZEBRA, () -> {
@@ -120,6 +130,7 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveFoodModifier(2.0F, (food)->{return food.isOf(Items.APPLE);}),
                             new AbilityPassiveFly(),
+                            new AbilityPassiveSetEnergy(10 * 20),
                             new AbilityPassiveBatVision(),
                             new AbilityPassiveMobDamage(1.2F, (mob) -> {return !(mob instanceof PlayerEntity);})));
         });
@@ -131,6 +142,7 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveHealthModifier(0.7F),
                             new AbilityPassiveFly(),
+                            new AbilityPassiveSetEnergy(10 * 20),
                             new AbilityPassiveFlySpeedModifier(0.5F)));
         });
 
@@ -141,6 +153,7 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveHealthModifier(0.75F),
                             new AbilityPassiveFly(),
+                            new AbilityPassiveSetEnergy(10 * 20),
                             new AbilityPassiveFlySpeedModifier(0.5F)));
         });
     }

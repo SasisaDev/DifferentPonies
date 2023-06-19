@@ -19,8 +19,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.*;
-import ru.sasisa.differentponies.api.clouds.ICloudsWalkable;
-import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
+import ru.sasisa.differentponies.api.interfaces.ICloudsWalkable;
 
 import java.util.Optional;
 

@@ -10,19 +10,18 @@ import org.jetbrains.annotations.Nullable;
 
 public class PassiveAbility {
 
-    public void OnGetExperience(PlayerEntity player, int experience)
-    {
+    boolean isDisplayed = false;
 
-    }
+    public void OnGetExperience(PlayerEntity player, int experience) {}
 
-    public void OnInitialization(PlayerEntity player)
-    {
-
-    }
+    public void OnInitialization(PlayerEntity player) {}
 
     public void ClientMovementTick(ClientPlayerEntity player){}
 
     public void Tick(PlayerEntity player) {}
+
+    public void OnEnergyEmptied(PlayerEntity player) {}
+    public void OnEnergyFilled(PlayerEntity player) {}
 
     public float GetEnchantmentCostModifier() {
         return 1;

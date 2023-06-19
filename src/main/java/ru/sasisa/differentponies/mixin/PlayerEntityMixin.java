@@ -18,14 +18,21 @@ import ru.sasisa.differentponies.Differentponies;
 import ru.sasisa.differentponies.api.Race;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
 import ru.sasisa.differentponies.api.ability.RaceAbilitySet;
-import ru.sasisa.differentponies.api.clouds.ICloudsWalkable;
+import ru.sasisa.differentponies.api.interfaces.ICloudsWalkable;
+import ru.sasisa.differentponies.api.interfaces.IHasEnergy;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
+public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, IHasEnergy {
 
     private Race race = Race.NONE;
     private RaceAbilitySet pony_abilities = null;
+
+    private int maxEnergy = 0;
+    private int energy = 0;
+
+    // 0 for unnoticed, 1 for drained, 2 for filled
+    private int energyStateLastTick = 0;
 
     @ModifyVariable(method= "getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F", at = @At(value = "RETURN", shift = At.Shift.BEFORE))
     public float customBlockBreakingSpeed(float f)
@@ -116,6 +123,21 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
                 ability.Tick((PlayerEntity) (Object) this);
             }
         }
+
+        if(energy == 0 && energyStateLastTick != 1) {
+            for (PassiveAbility ability : pony_abilities.Passives) {
+                ability.OnEnergyEmptied((PlayerEntity) (Object) this);
+            }
+        } else if(energy == maxEnergy && energyStateLastTick != 2) {
+            for (PassiveAbility ability : pony_abilities.Passives) {
+                ability.OnEnergyFilled((PlayerEntity) (Object) this);
+            }
+        }
+
+        if(!((PlayerEntity)(Object)this).hasStatusEffect(Differentponies.DRAIN_ENERGY))
+        {
+            IncrementEnergy(1);
+        }
     }
 
     @Override
@@ -188,5 +210,70 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable {
             return true;
         }
         return false;
+    }
+
+    private void UpdateEnergyStateLastTick()
+    {
+        if(energy == 0) {
+            energyStateLastTick = 1;
+        } else if(energy == maxEnergy)
+        {
+            energyStateLastTick = 2;
+        } else {
+            energyStateLastTick = 0;
+        }
+    }
+
+    @Override
+    public int GetMaxEnergy() {
+        return maxEnergy;
+    }
+
+    @Override
+    public void SetMaxEnergy(int newMaxEnergy) {
+        maxEnergy = newMaxEnergy;
+        if(energy > maxEnergy)
+        {
+            energy = maxEnergy;
+            UpdateEnergyStateLastTick();
+        }
+    }
+
+    @Override
+    public int GetEnergy() {
+        return energy;
+    }
+
+    @Override
+    public void SetEnergy(int newEnergy) {
+        energy = newEnergy;
+        if(energy > maxEnergy)
+        {
+            energy = maxEnergy;
+        }
+
+        UpdateEnergyStateLastTick();
+    }
+
+    @Override
+    public void IncrementEnergy(int inc) {
+        energy += inc;
+        if(energy > maxEnergy)
+        {
+            energy = maxEnergy;
+        }
+
+        UpdateEnergyStateLastTick();
+    }
+
+    @Override
+    public void DecrementEnergy(int dec) {
+        energy -= dec;
+        if(energy < 0)
+        {
+            energy = 0;
+        }
+
+        UpdateEnergyStateLastTick();
     }
 }

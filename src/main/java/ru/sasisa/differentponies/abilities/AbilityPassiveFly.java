@@ -25,6 +25,13 @@ public class AbilityPassiveFly extends PassiveAbility {
             player.sendAbilitiesUpdate();
         }*/
     }
+
+    @Override
+    public void OnEnergyEmptied(PlayerEntity player)
+    {
+        player.getAbilities().flying = false;
+    }
+
     @Override
     public void Tick(PlayerEntity player)
     {

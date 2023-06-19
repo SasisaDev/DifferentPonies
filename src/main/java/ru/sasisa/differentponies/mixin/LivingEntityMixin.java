@@ -1,7 +1,5 @@
 package ru.sasisa.differentponies.mixin;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PowderSnowBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.sasisa.differentponies.Differentponies;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
-import ru.sasisa.differentponies.api.clouds.ICloudsWalkable;
+import ru.sasisa.differentponies.api.interfaces.ICloudsWalkable;
 import ru.sasisa.differentponies.block.CloudBlock;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
