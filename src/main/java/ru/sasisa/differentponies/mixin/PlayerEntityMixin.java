@@ -122,21 +122,23 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
             for (PassiveAbility ability : pony_abilities.Passives) {
                 ability.Tick((PlayerEntity) (Object) this);
             }
-        }
 
-        if(energy == 0 && energyStateLastTick != 1) {
-            for (PassiveAbility ability : pony_abilities.Passives) {
-                ability.OnEnergyEmptied((PlayerEntity) (Object) this);
+            if(energy == 0 && energyStateLastTick != 1) {
+                for (PassiveAbility ability : pony_abilities.Passives) {
+                    ability.OnEnergyEmptied((PlayerEntity) (Object) this);
+                }
+                energyStateLastTick = 1;
+            } else if(energy == maxEnergy && energyStateLastTick != 2) {
+                for (PassiveAbility ability : pony_abilities.Passives) {
+                    ability.OnEnergyFilled((PlayerEntity) (Object) this);
+                }
+                energyStateLastTick = 2;
             }
-        } else if(energy == maxEnergy && energyStateLastTick != 2) {
-            for (PassiveAbility ability : pony_abilities.Passives) {
-                ability.OnEnergyFilled((PlayerEntity) (Object) this);
-            }
-        }
 
-        if(!((PlayerEntity)(Object)this).hasStatusEffect(Differentponies.DRAIN_ENERGY))
-        {
-            IncrementEnergy(1);
+            if(!((PlayerEntity)(Object)this).hasStatusEffect(Differentponies.DRAIN_ENERGY))
+            {
+                IncrementEnergy(1);
+            }
         }
     }
 
@@ -212,18 +214,6 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
         return false;
     }
 
-    private void UpdateEnergyStateLastTick()
-    {
-        if(energy == 0) {
-            energyStateLastTick = 1;
-        } else if(energy == maxEnergy)
-        {
-            energyStateLastTick = 2;
-        } else {
-            energyStateLastTick = 0;
-        }
-    }
-
     @Override
     public int GetMaxEnergy() {
         return maxEnergy;
@@ -235,7 +225,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
         if(energy > maxEnergy)
         {
             energy = maxEnergy;
-            UpdateEnergyStateLastTick();
+            UpdateEnergyLastTickState();
         }
     }
 
@@ -251,8 +241,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
         {
             energy = maxEnergy;
         }
-
-        UpdateEnergyStateLastTick();
+        UpdateEnergyLastTickState();
     }
 
     @Override
@@ -263,7 +252,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
             energy = maxEnergy;
         }
 
-        UpdateEnergyStateLastTick();
+        UpdateEnergyLastTickState();
     }
 
     @Override
@@ -274,6 +263,14 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
             energy = 0;
         }
 
-        UpdateEnergyStateLastTick();
+        UpdateEnergyLastTickState();
+    }
+
+    private void UpdateEnergyLastTickState()
+    {
+        if(energy != maxEnergy && energy != 0)
+        {
+            energyStateLastTick = 0;
+        }
     }
 }
