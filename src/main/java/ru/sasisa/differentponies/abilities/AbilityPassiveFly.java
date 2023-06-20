@@ -14,8 +14,17 @@ public class AbilityPassiveFly extends PassiveAbility {
     @Override
     public void OnInitialization(PlayerEntity player)
     {
-        player.getAbilities().allowFlying = true;
+        // player.getAbilities().allowFlying = true;
     }
+
+    @Override
+    public void ClientMovementTick(ClientPlayerEntity player)
+    {
+
+    }
+
+    @Override
+    public boolean CanFly() {return true;}
 
     @Override
     public void OnEnergyEmptied(PlayerEntity player)

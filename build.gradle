@@ -13,6 +13,7 @@ repositories {
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
 
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -23,6 +24,10 @@ dependencies {
 
         // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    implementation("com.github.LlamaLad7:MixinExtras:0.1.1")
+    annotationProcessor("com.github.LlamaLad7:MixinExtras:0.1.1")
+    include("com.github.LlamaLad7:MixinExtras:0.1.1")
 
     modImplementation "net.luckperms:api:5.4"
     include "net.luckperms:api:5.4"

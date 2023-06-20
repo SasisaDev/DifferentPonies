@@ -2,6 +2,7 @@ package ru.sasisa.differentponies.api.ability;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,10 +19,14 @@ public class PassiveAbility {
 
     public void ClientMovementTick(ClientPlayerEntity player){}
 
+    public void OnDamaged(PlayerEntity player, Entity attacker, DamageSource source, float amount){}
+
     public void Tick(PlayerEntity player) {}
 
     public void OnEnergyEmptied(PlayerEntity player) {}
     public void OnEnergyFilled(PlayerEntity player) {}
+
+    public boolean CanFly(){return false;}
 
     public float GetEnchantmentCostModifier() {
         return 1;

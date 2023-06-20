@@ -61,6 +61,14 @@ public class LivingEntityMixin implements ICloudsWalkable {
                 }
             }
         }
+
+        if((LivingEntity)(Object)this instanceof PlayerEntity player)
+        {
+            for (PassiveAbility passive : ((IPlayerEntityMixin)player).GetAbilitySet().Passives)
+            {
+                passive.OnDamaged(player, source.getAttacker(), source, amount);
+            }
+        }
     }
 
     @Override

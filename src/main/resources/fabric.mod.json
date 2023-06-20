@@ -20,6 +20,9 @@
     ],
     "server": [
       "ru.sasisa.differentponies.server.DifferentponiesServer"
+    ],
+    "preLaunch": [
+      "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
     ]
   },
   "mixins": [
