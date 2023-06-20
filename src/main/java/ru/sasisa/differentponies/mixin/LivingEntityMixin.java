@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.sasisa.differentponies.Differentponies;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
@@ -17,6 +18,16 @@ import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin implements ICloudsWalkable {
+
+    @Inject(method = "tickFallFlying()V", at = @At(value = "INVOKE", target="Lnet/minecraft/entity/LivingEntity;getEquippedStack(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/ItemStack;"), cancellable = true)
+    public void customTickFallFlying(CallbackInfo ci)
+    {
+        // TODO: Rewrite it to change expression, so server won't prevent Fall Flying because of Elytra absence
+        if(CanWalkOnClouds())
+        {
+            ((PlayerEntity)(Object)this).startFallFlying();
+        }
+    }
 
     @ModifyVariable(method = "applyMovementInput(Lnet/minecraft/util/math/Vec3d;F)Lnet/minecraft/util/math/Vec3d;",
                     at = @At(value="TAIL"), ordinal = 1)

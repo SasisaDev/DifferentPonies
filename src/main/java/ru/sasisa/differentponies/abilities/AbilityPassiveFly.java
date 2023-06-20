@@ -4,9 +4,11 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.tag.FluidTags;
 import ru.sasisa.differentponies.Differentponies;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
+import ru.sasisa.differentponies.api.interfaces.IHasEnergy;
 
 // When there are X players of same race, you get additional resources
 public class AbilityPassiveFly extends PassiveAbility {
@@ -30,13 +32,22 @@ public class AbilityPassiveFly extends PassiveAbility {
     public void OnEnergyEmptied(PlayerEntity player)
     {
         player.getAbilities().flying = false;
+        if(player.world.isClient)
+        {
+            player.sendAbilitiesUpdate();
+        }
     }
 
     @Override
     public void Tick(PlayerEntity player)
     {
+        /*if(player.getAbilities().flying && ((IHasEnergy)(Object)player).GetEnergy() == 0)
+        {
+            OnEnergyEmptied(player);
+        }*/
+
         if(!player.world.isClient && player.getAbilities().flying) {
-            player.addStatusEffect(new StatusEffectInstance(Differentponies.DRAIN_ENERGY, 1 * 20, 1));
+            player.addStatusEffect(new StatusEffectInstance(Differentponies.DRAIN_ENERGY, 5, 1));
         }
     }
 }

@@ -34,6 +34,16 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
     // 0 for unnoticed, 1 for drained, 2 for filled
     private int energyStateLastTick = 0;
 
+    @Inject(method = "checkFallFlying()Z", at = @At(value = "INVOKE", target="Lnet/minecraft/entity/player/PlayerEntity;getEquippedStack(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/ItemStack;"), cancellable = true)
+    public void customFallFlyingCheck(CallbackInfoReturnable<Boolean> cir)
+    {
+        if(CanWalkOnClouds())
+        {
+            ((PlayerEntity)(Object)this).startFallFlying();
+            cir.setReturnValue(true);
+        }
+    }
+
     @ModifyVariable(method= "getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F", at = @At(value = "RETURN", shift = At.Shift.BEFORE))
     public float customBlockBreakingSpeed(float f)
     {

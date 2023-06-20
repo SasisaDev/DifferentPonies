@@ -59,7 +59,7 @@ public class EnergyHUD implements HudRenderCallback {
             {
                 RenderSystem.setShaderTexture(0, EMPTY_ENERGY);
             }
-            DrawableHelper.drawTexture(matrixStack, x + 9 + (i*8), y - 54, 0, 0, 9, 9, 9,9);
+            DrawableHelper.drawTexture(matrixStack, x + 10 + (i*8), y - 49, 0, 0, 9, 9, 9,9);
         }
     }
 }
