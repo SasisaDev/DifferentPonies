@@ -16,6 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import ru.sasisa.differentponies.Differentponies;
 import ru.sasisa.differentponies.api.Race;
 import ru.sasisa.differentponies.api.Utils;
+import ru.sasisa.differentponies.api.interfaces.IPony;
 import ru.sasisa.differentponies.api.networking.ChannelConstants;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
@@ -29,7 +30,7 @@ public class DifferentponiesServer implements DedicatedServerModInitializer {
     public void onInitializeServer() {
         ServerPlayerEvents.AFTER_RESPAWN.register((ServerPlayerEntity oldPlayer, ServerPlayerEntity player, boolean alive) -> {
             Race race = Utils.GetRaceFromLuckperms(player);
-            ((IPlayerEntityMixin)(Object)player).SetRace(race);
+            ((IPony)(Object)player).SetRace(race);
 
             Differentponies.manager.RegisterPlayer(player);
 
@@ -42,7 +43,7 @@ public class DifferentponiesServer implements DedicatedServerModInitializer {
         ServerPlayConnectionEvents.JOIN.register(
                 (ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) -> {
                     Race race = Utils.GetRaceFromLuckperms(handler.player);
-                    ((IPlayerEntityMixin)(Object)handler.player).SetRace(race);
+                    ((IPony)(Object)handler.player).SetRace(race);
 
                     Differentponies.manager.RegisterPlayer(handler.player);
 

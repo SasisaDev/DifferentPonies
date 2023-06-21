@@ -9,6 +9,7 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
+import ru.sasisa.differentponies.api.interfaces.IPony;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 @Environment(EnvType.SERVER)
@@ -23,8 +24,8 @@ public class ServerPlayNetworkHandlerMixin {
         ServerPlayNetworkHandler handler = (ServerPlayNetworkHandler)(Object)this;
         ServerPlayerEntity player = handler.player;
 
-        if(((IPlayerEntityMixin)player).GetAbilitySet() != null) {
-            for (PassiveAbility ability : ((IPlayerEntityMixin)player).GetAbilitySet().Passives) {
+        if(((IPony)player).GetAbilitySet() != null) {
+            for (PassiveAbility ability : ((IPony)player).GetAbilitySet().Passives) {
                 if (ability.CanFly()) {
                     customCanFly = true;
                     break;

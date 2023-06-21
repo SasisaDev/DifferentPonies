@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import ru.sasisa.differentponies.Differentponies;
 import ru.sasisa.differentponies.api.Utils;
 import ru.sasisa.differentponies.api.ability.AbilityManager;
+import ru.sasisa.differentponies.api.interfaces.IPony;
 import ru.sasisa.differentponies.api.networking.ChannelConstants;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
@@ -17,7 +18,7 @@ public class ClientChannel {
             client.execute(() -> {
                 if(client.player == null) { return; }
 
-                ((IPlayerEntityMixin)client.player).SetRace(Utils.RaceFromInt(race));
+                ((IPony)client.player).SetRace(Utils.RaceFromInt(race));
 
                 Differentponies.manager.RegisterPlayer(client.player);
             });

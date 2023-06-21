@@ -3,6 +3,7 @@ package ru.sasisa.differentponies.api.ability;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import ru.sasisa.differentponies.api.Race;
+import ru.sasisa.differentponies.api.interfaces.IPony;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 import java.util.HashMap;
@@ -18,10 +19,10 @@ public class AbilityManager {
 
     public void RegisterPlayer(PlayerEntity player)
     {
-        AbilitySetCreator creator = REGISTRY.get(((IPlayerEntityMixin)(player)).GetRace());
+        AbilitySetCreator creator = REGISTRY.get(((IPony)(player)).GetRace());
         if(creator == null) { return; }
 
-        ((IPlayerEntityMixin)(Object)(player)).SetAbilitySet(creator.Create());
+        ((IPony)(Object)(player)).SetAbilitySet(creator.Create());
     }
 
     public void UseAbility(ServerPlayerEntity player, int ability)

@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
+import ru.sasisa.differentponies.api.interfaces.IPony;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 @Mixin(LootTable.class)
@@ -26,7 +27,7 @@ public class LootTableMixin {
         if(ctx.hasParameter(LootContextParameters.BLOCK_STATE) && ctx.hasParameter(LootContextParameters.THIS_ENTITY)) {
             Entity entity = ctx.get(LootContextParameters.THIS_ENTITY);
             if(entity instanceof PlayerEntity player) {
-                if(((IPlayerEntityMixin)player).GetAbilitySet() == null)
+                if(((IPony)player).GetAbilitySet() == null)
                 {
                     return stacks;
                 }
@@ -36,7 +37,7 @@ public class LootTableMixin {
                 for (ItemStack stack : stacks) {
                     float modifier = 1;
 
-                    for(PassiveAbility ability : ((IPlayerEntityMixin)player).GetAbilitySet().Passives)
+                    for(PassiveAbility ability : ((IPony)player).GetAbilitySet().Passives)
                     {
                         modifier *= ability.GetDropModifier(stack, blockState);
                     }

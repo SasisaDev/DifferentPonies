@@ -5,11 +5,5 @@ import ru.sasisa.differentponies.api.ability.RaceAbilitySet;
 
 public interface IPlayerEntityMixin {
 
-    public Race GetRace();
-    public void SetRace(Race race);
-
-    public RaceAbilitySet GetAbilitySet();
-    public void SetAbilitySet(RaceAbilitySet set);
-
     public void AddExperienceUnhooked(int experience);
 }

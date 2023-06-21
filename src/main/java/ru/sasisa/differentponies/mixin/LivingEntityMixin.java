@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import ru.sasisa.differentponies.Differentponies;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
 import ru.sasisa.differentponies.api.interfaces.ICloudsWalkable;
+import ru.sasisa.differentponies.api.interfaces.IPony;
 import ru.sasisa.differentponies.block.CloudBlock;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
@@ -64,7 +65,7 @@ public class LivingEntityMixin implements ICloudsWalkable {
         {
             if(source.getAttacker() instanceof PlayerEntity)
             {
-                for (PassiveAbility passive : ((IPlayerEntityMixin) (Object) source.getAttacker()).GetAbilitySet().Passives)
+                for (PassiveAbility passive : ((IPony) (Object) source.getAttacker()).GetAbilitySet().Passives)
                 {
                     mod *= passive.GetDealtDamageModifier((PlayerEntity)source.getAttacker(), (LivingEntity)(Object)this, source, amount);
                 }
@@ -81,7 +82,7 @@ public class LivingEntityMixin implements ICloudsWalkable {
         {
             if(source.getAttacker() instanceof PlayerEntity)
             {
-                for (PassiveAbility passive : ((IPlayerEntityMixin) (Object) source.getAttacker()).GetAbilitySet().Passives)
+                for (PassiveAbility passive : ((IPony) (Object) source.getAttacker()).GetAbilitySet().Passives)
                 {
                     passive.OnDamageMob((PlayerEntity)source.getAttacker(), (LivingEntity)(Object)this, source, amount);
                 }
@@ -90,7 +91,7 @@ public class LivingEntityMixin implements ICloudsWalkable {
 
         if((LivingEntity)(Object)this instanceof PlayerEntity player)
         {
-            for (PassiveAbility passive : ((IPlayerEntityMixin)player).GetAbilitySet().Passives)
+            for (PassiveAbility passive : ((IPony)player).GetAbilitySet().Passives)
             {
                 passive.OnDamaged(player, source.getAttacker(), source, amount);
             }

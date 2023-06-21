@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ru.sasisa.differentponies.api.ability.PassiveAbility;
 import ru.sasisa.differentponies.api.interfaces.ICloudsWalkable;
+import ru.sasisa.differentponies.api.interfaces.IPony;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 @Environment(EnvType.CLIENT)
@@ -25,8 +26,8 @@ public class ClientPlayerEntityMixin {
         boolean customCanFly = false;
         boolean isInLiquid = ((ClientPlayerEntity)(Object)this).isSubmergedIn(FluidTags.WATER) || ((ClientPlayerEntity)(Object)this).isSubmergedIn(FluidTags.LAVA);
 
-        if(((IPlayerEntityMixin)(Object)this).GetAbilitySet() != null) {
-            for (PassiveAbility ability : ((IPlayerEntityMixin) (Object) this).GetAbilitySet().Passives) {
+        if(((IPony)(Object)this).GetAbilitySet() != null) {
+            for (PassiveAbility ability : ((IPony) (Object) this).GetAbilitySet().Passives) {
                 if (ability.CanFly()) {
                     customCanFly = true;
                     break;
@@ -48,8 +49,8 @@ public class ClientPlayerEntityMixin {
 
     @Inject(method = "tickMovement", at = @At("HEAD"))
     private void tickMovement(CallbackInfo info) {
-        if(((IPlayerEntityMixin)(Object)this).GetAbilitySet() != null) {
-            for (PassiveAbility ability : ((IPlayerEntityMixin) (Object) this).GetAbilitySet().Passives) {
+        if(((IPony)(Object)this).GetAbilitySet() != null) {
+            for (PassiveAbility ability : ((IPony) (Object) this).GetAbilitySet().Passives) {
                 ability.ClientMovementTick((ClientPlayerEntity) (Object) this);
             }
         }

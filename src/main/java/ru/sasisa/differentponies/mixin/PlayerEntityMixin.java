@@ -20,10 +20,11 @@ import ru.sasisa.differentponies.api.ability.PassiveAbility;
 import ru.sasisa.differentponies.api.ability.RaceAbilitySet;
 import ru.sasisa.differentponies.api.interfaces.ICloudsWalkable;
 import ru.sasisa.differentponies.api.interfaces.IHasEnergy;
+import ru.sasisa.differentponies.api.interfaces.IPony;
 import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, IHasEnergy {
+public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, IHasEnergy, IPony {
 
     private Race race = Race.NONE;
     private RaceAbilitySet pony_abilities = null;
