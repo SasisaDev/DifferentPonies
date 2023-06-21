@@ -1,5 +1,6 @@
 package ru.sasisa.differentponies.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,14 +20,28 @@ import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin implements ICloudsWalkable {
 
-    @Inject(method = "tickFallFlying()V", at = @At(value = "INVOKE", target="Lnet/minecraft/entity/LivingEntity;getEquippedStack(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/ItemStack;"), cancellable = true)
-    public void customTickFallFlying(CallbackInfo ci)
+    @ModifyExpressionValue(method = "tickFallFlying()V", at = @At(value = "INVOKE", target="Lnet/minecraft/item/ElytraItem;isUsable(Lnet/minecraft/item/ItemStack;)Z"))
+    public boolean customTickFallFlying_isUsable(boolean canFallFly)
     {
-        // TODO: Rewrite it to change expression, so server won't prevent Fall Flying because of Elytra absence
-        if(CanWalkOnClouds())
+        boolean customCanFallFly = false;
+
+        if((Object)this instanceof ICloudsWalkable walker)
         {
-            ((PlayerEntity)(Object)this).startFallFlying();
+            customCanFallFly = walker.CanWalkOnClouds();
         }
+        return canFallFly || customCanFallFly;
+    }
+
+    @ModifyExpressionValue(method = "tickFallFlying()V", at = @At(value = "INVOKE", target="Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    public boolean customTickFallFlying_isOf(boolean canFallFly)
+    {
+        boolean customCanFallFly = false;
+
+        if((Object)this instanceof ICloudsWalkable walker)
+        {
+            customCanFallFly = walker.CanWalkOnClouds();
+        }
+        return canFallFly || customCanFallFly;
     }
 
     @ModifyVariable(method = "applyMovementInput(Lnet/minecraft/util/math/Vec3d;F)Lnet/minecraft/util/math/Vec3d;",

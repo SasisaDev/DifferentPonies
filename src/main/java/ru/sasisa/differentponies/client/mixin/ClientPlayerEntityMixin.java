@@ -23,7 +23,7 @@ public class ClientPlayerEntityMixin {
     private boolean customCanFly(boolean canFly)
     {
         boolean customCanFly = false;
-        boolean isInLiquid = ((ClientPlayerEntity)(Object)this).isSubmergedIn(FluidTags.WATER) && ((ClientPlayerEntity)(Object)this).isSubmergedIn(FluidTags.LAVA);
+        boolean isInLiquid = ((ClientPlayerEntity)(Object)this).isSubmergedIn(FluidTags.WATER) || ((ClientPlayerEntity)(Object)this).isSubmergedIn(FluidTags.LAVA);
 
         if(((IPlayerEntityMixin)(Object)this).GetAbilitySet() != null) {
             for (PassiveAbility ability : ((IPlayerEntityMixin) (Object) this).GetAbilitySet().Passives) {

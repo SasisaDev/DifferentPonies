@@ -13,7 +13,7 @@ public class AbilityPassiveBatVision extends PassiveAbility {
     {
         if (!player.world.isClient) {
             if(!player.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 999 * 20, 6));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 999 * 20, 6, true, false));
             }
         }
     }

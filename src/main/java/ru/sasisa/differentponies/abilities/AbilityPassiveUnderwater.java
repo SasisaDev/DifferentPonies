@@ -15,9 +15,9 @@ public class AbilityPassiveUnderwater extends PassiveAbility {
     {
         if (!player.world.isClient) {
             if (player.isSubmergedIn(FluidTags.WATER)) {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 2*20, 6));
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 2*20, 6));
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 2*20, 6));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 2*20, 6, true, false));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 2*20, 6, true, false));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 2*20, 6, true, false));
             }
         }
     }

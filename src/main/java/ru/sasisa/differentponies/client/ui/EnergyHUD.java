@@ -9,6 +9,7 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.Identifier;
 import ru.sasisa.differentponies.api.interfaces.IHasEnergy;
 
@@ -40,13 +41,18 @@ public class EnergyHUD implements HudRenderCallback {
 
         if(player != null)
         {
-            if(player.GetMaxEnergy() > 0) {
+            if(player.GetMaxEnergy() > 0 && player.GetEnergy() != player.GetMaxEnergy()) {
                 int energyPerOne = player.GetMaxEnergy() / 10;
                 objects = (int)Math.ceil((double)player.GetEnergy() / (double) energyPerOne);
 
                 int lastBulb = player.GetEnergy() - (energyPerOne * (objects - 1));
 
                 lastIsMini = (lastBulb) <= (energyPerOne / 2);
+            }
+
+            if(client.player.getAir() != client.player.getMaxAir())
+            {
+                y -= 10;
             }
         }
 
@@ -59,7 +65,7 @@ public class EnergyHUD implements HudRenderCallback {
             {
                 RenderSystem.setShaderTexture(0, EMPTY_ENERGY);
             }
-            DrawableHelper.drawTexture(matrixStack, x + 10 + (i*8), y - 49, 0, 0, 9, 9, 9,9);
+            DrawableHelper.drawTexture(matrixStack, x + 10 + (9*8) - (i*8), y - 49, 0, 0, 9, 9, 9,9);
         }
     }
 }

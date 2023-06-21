@@ -22,7 +22,18 @@ public class AbilityPassiveFly extends PassiveAbility {
     @Override
     public void ClientMovementTick(ClientPlayerEntity player)
     {
+        if(!player.getAbilities().allowFlying &&
+           (player.isSubmergedIn(FluidTags.WATER) || player.isSubmergedIn(FluidTags.LAVA)) &&
+           player.getAbilities().flying)
+        {
+            player.getAbilities().flying = false;
+            player.sendAbilitiesUpdate();
+        }
 
+        if(player.getAbilities().flying && !player.hasStatusEffect(Differentponies.DRAIN_ENERGY))
+        {
+            player.sendAbilitiesUpdate();
+        }
     }
 
     @Override
@@ -47,7 +58,7 @@ public class AbilityPassiveFly extends PassiveAbility {
         }*/
 
         if(!player.world.isClient && player.getAbilities().flying) {
-            player.addStatusEffect(new StatusEffectInstance(Differentponies.DRAIN_ENERGY, 5, 1));
+            player.addStatusEffect(new StatusEffectInstance(Differentponies.DRAIN_ENERGY, 5, player.isSprinting() ? 2 : 1, true, false));
         }
     }
 }

@@ -183,7 +183,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
         }
 
         ((PlayerEntity)(Object)this).getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(20 * healthModifier);
-        ((PlayerEntity)(Object)this).getAbilities().setFlySpeed(((PlayerEntity)(Object)this).getAbilities().getFlySpeed() * flySpeedModifier);
+        ((PlayerEntity)(Object)this).getAbilities().setFlySpeed(0.05F * flySpeedModifier);
     }
 
     @Override
@@ -214,7 +214,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
 
     @Override
     public boolean CanWalkOnClouds() {
-        if(race == Race.BAT || race == Race.ALICORN || race == Race.PEGASUS) {
+        if(race == Race.BAT || race == Race.ALICORN || race == Race.PEGASUS || race == Race.GRIFFON) {
             return true;
         } else if(race == Race.CHANGLING || race == Race.GOOD_CHANGLING)
         {

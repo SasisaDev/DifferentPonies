@@ -63,7 +63,7 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveHealthModifier(1.5F),
                             new AbilityPassiveHarvestModifier(2F, 15),
-                            new AbilityPassiveMobDamage(1.1F, (mob)-> {return mob.getGroup() == EntityGroup.DEFAULT || mob.getGroup() == EntityGroup.AQUATIC;})));
+                            new AbilityPassiveMobDamage(1.25F, (mob)-> {return true /*mob.getGroup() == EntityGroup.DEFAULT || mob.getGroup() == EntityGroup.AQUATIC*/;})));
         });
 
         manager.BindAbilitySet(Race.PEGASUS, () -> {
@@ -73,7 +73,7 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveFlySpeedModifier(2.0F),
                             new AbilityPassiveFly(),
-                            new AbilityPassiveSetEnergy(10 * 20)));
+                            new AbilityPassiveSetEnergy(45 * 20)));
         });
 
         manager.BindAbilitySet(Race.GRIFFON, () -> {
@@ -81,9 +81,9 @@ public class Differentponies implements ModInitializer {
                     // Actives
                     List.of(),
                     // Passives
-                    List.of(new AbilityPassiveFlySpeedModifier(2.0F),
+                    List.of(new AbilityPassiveFlySpeedModifier(1.5F),
                             new AbilityPassiveFly(),
-                            new AbilityPassiveSetEnergy(10 * 20),
+                            new AbilityPassiveSetEnergy(60 * 20),
                             new AbilityPassiveFoodEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 10*20, 1), List.of(Items.BEEF, Items.PORKCHOP, Items.CHICKEN, Items.MUTTON, Items.RABBIT, Items.SALMON, Items.COD))));
         });
 
@@ -94,7 +94,7 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveHealthModifier(1.25F),
                             new AbilityPassiveFly(),
-                            new AbilityPassiveSetEnergy(10 * 20)));
+                            new AbilityPassiveSetEnergy(45 * 20)));
         });
 
         manager.BindAbilitySet(Race.ZEBRA, () -> {
@@ -130,7 +130,7 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveFoodModifier(2.0F, (food)->{return food.isOf(Items.APPLE);}),
                             new AbilityPassiveFly(),
-                            new AbilityPassiveSetEnergy(10 * 20),
+                            new AbilityPassiveSetEnergy(60 * 20),
                             new AbilityPassiveBatVision(),
                             new AbilityPassiveMobDamage(1.2F, (mob) -> {return !(mob instanceof PlayerEntity);})));
         });
@@ -142,8 +142,8 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveHealthModifier(0.7F),
                             new AbilityPassiveFly(),
-                            new AbilityPassiveSetEnergy(10 * 20),
-                            new AbilityPassiveFlySpeedModifier(0.5F)));
+                            new AbilityPassiveSetEnergy(60 * 20),
+                            new AbilityPassiveFlySpeedModifier(0.45F)));
         });
 
         manager.BindAbilitySet(Race.GOOD_CHANGLING, () -> {
@@ -153,7 +153,7 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveHealthModifier(0.75F),
                             new AbilityPassiveFly(),
-                            new AbilityPassiveSetEnergy(10 * 20),
+                            new AbilityPassiveSetEnergy(60 * 20),
                             new AbilityPassiveFlySpeedModifier(0.5F)));
         });
     }
