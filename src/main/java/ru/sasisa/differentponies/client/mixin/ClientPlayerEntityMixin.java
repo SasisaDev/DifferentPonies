@@ -35,17 +35,17 @@ public class ClientPlayerEntityMixin {
             }
         }
 
-        return (canFly || customCanFly) && !isInLiquid;
+        return canFly || (customCanFly && !isInLiquid) ;
     }
 
-    @Inject(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getEquippedStack(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/ItemStack;"))
+    /*@Inject(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getEquippedStack(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/ItemStack;"))
     private void customTickMovement_FallFlying(CallbackInfo ci)
     {
-        if(((ICloudsWalkable)(Object)this).CanWalkOnClouds())
+        if(((IPony)(Object)this).HasWings())
         {
             ((ClientPlayerEntity)(Object)this).networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity)(Object)this, ClientCommandC2SPacket.Mode.START_FALL_FLYING));
         }
-    }
+    }*/
 
     @Inject(method = "tickMovement", at = @At("HEAD"))
     private void tickMovement(CallbackInfo info) {

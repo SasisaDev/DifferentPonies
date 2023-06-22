@@ -47,6 +47,10 @@ public class AbilityPassiveFly extends PassiveAbility {
         {
             player.sendAbilitiesUpdate();
         }
+        else
+        {
+            player.addStatusEffect(new StatusEffectInstance(Differentponies.DRAIN_ENERGY, 2 * 20, 3, true, false));
+        }
     }
 
     @Override

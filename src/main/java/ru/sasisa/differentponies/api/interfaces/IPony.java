@@ -9,4 +9,6 @@ public interface IPony {
 
     public RaceAbilitySet GetAbilitySet();
     public void SetAbilitySet(RaceAbilitySet set);
+
+    public boolean HasWings();
 }

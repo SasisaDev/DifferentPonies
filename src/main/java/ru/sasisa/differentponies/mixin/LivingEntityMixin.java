@@ -21,30 +21,6 @@ import ru.sasisa.differentponies.interfaces.IPlayerEntityMixin;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin implements ICloudsWalkable {
 
-    @ModifyExpressionValue(method = "tickFallFlying()V", at = @At(value = "INVOKE", target="Lnet/minecraft/item/ElytraItem;isUsable(Lnet/minecraft/item/ItemStack;)Z"))
-    public boolean customTickFallFlying_isUsable(boolean canFallFly)
-    {
-        boolean customCanFallFly = false;
-
-        if((Object)this instanceof ICloudsWalkable walker)
-        {
-            customCanFallFly = walker.CanWalkOnClouds();
-        }
-        return canFallFly || customCanFallFly;
-    }
-
-    @ModifyExpressionValue(method = "tickFallFlying()V", at = @At(value = "INVOKE", target="Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
-    public boolean customTickFallFlying_isOf(boolean canFallFly)
-    {
-        boolean customCanFallFly = false;
-
-        if((Object)this instanceof ICloudsWalkable walker)
-        {
-            customCanFallFly = walker.CanWalkOnClouds();
-        }
-        return canFallFly || customCanFallFly;
-    }
-
     @ModifyVariable(method = "applyMovementInput(Lnet/minecraft/util/math/Vec3d;F)Lnet/minecraft/util/math/Vec3d;",
                     at = @At(value="TAIL"), ordinal = 1)
     public Vec3d modifyAppliedMovementInput(Vec3d vec3d)

@@ -1,11 +1,13 @@
 package ru.sasisa.differentponies;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -18,6 +20,7 @@ import ru.sasisa.differentponies.abilities.*;
 import ru.sasisa.differentponies.api.Race;
 import ru.sasisa.differentponies.api.ability.AbilityManager;
 import ru.sasisa.differentponies.api.ability.RaceAbilitySet;
+import ru.sasisa.differentponies.api.interfaces.IPony;
 import ru.sasisa.differentponies.block.CloudBlock;
 import ru.sasisa.differentponies.effect.DrainEnergyEffect;
 import ru.sasisa.differentponies.enchantment.EarthAffinityEnchantment;
@@ -155,6 +158,16 @@ public class Differentponies implements ModInitializer {
                             new AbilityPassiveFly(),
                             new AbilityPassiveSetEnergy(60 * 20),
                             new AbilityPassiveFlySpeedModifier(0.5F)));
+        });
+
+        // Events
+
+        EntityElytraEvents.CUSTOM.register((LivingEntity entity, boolean tickElytra) -> {
+            if(entity instanceof IPony pony)
+            {
+                return pony.HasWings();
+            }
+            return false;
         });
     }
 }
