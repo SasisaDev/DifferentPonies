@@ -49,20 +49,27 @@ public class AbilityPassiveFly extends PassiveAbility {
         }
         else
         {
-            player.addStatusEffect(new StatusEffectInstance(Differentponies.DRAIN_ENERGY, 2 * 20, 3, true, false));
+            player.addStatusEffect(new StatusEffectInstance(Differentponies.DRAIN_ENERGY, 5 * 20, 3, true, false));
         }
     }
 
     @Override
     public void Tick(PlayerEntity player)
     {
-        /*if(player.getAbilities().flying && ((IHasEnergy)(Object)player).GetEnergy() == 0)
+        if(player.getAbilities().flying && !player.getAbilities().creativeMode)
         {
-            OnEnergyEmptied(player);
-        }*/
+            if(((IHasEnergy)(Object)player).GetEnergy() < 1)
+            {
+                OnEnergyEmptied(player);
+            }
 
-        if(!player.world.isClient && player.getAbilities().flying) {
-            player.addStatusEffect(new StatusEffectInstance(Differentponies.DRAIN_ENERGY, 5, player.isSprinting() ? 2 : 1, true, false));
+            if(player.getY() > 259) {
+                OnEnergyEmptied(player);
+            }
+
+            if(!player.world.isClient) {
+                player.addStatusEffect(new StatusEffectInstance(Differentponies.DRAIN_ENERGY, 5, player.isSprinting() ? 2 : 1, true, false));
+            }
         }
     }
 }

@@ -35,6 +35,9 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
     // 0 for unnoticed, 1 for drained, 2 for filled
     private int energyStateLastTick = 0;
 
+    private int energySlowedTimer = 0;
+    private final int energySlowedTimerTicks = 5;
+
     /*@Inject(method = "checkFallFlying()Z", at = @At(value = "INVOKE", target="Lnet/minecraft/entity/player/PlayerEntity;getEquippedStack(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/ItemStack;"), cancellable = true)
     public void customFallFlyingCheck(CallbackInfoReturnable<Boolean> cir)
     {
@@ -148,7 +151,16 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
 
             if(!((PlayerEntity)(Object)this).hasStatusEffect(Differentponies.DRAIN_ENERGY))
             {
-                IncrementEnergy(1);
+                if(((PlayerEntity)(Object)this).isFallFlying()) {
+                    if (energySlowedTimer <= 0) {
+                        IncrementEnergy(1);
+                        energySlowedTimer = energySlowedTimerTicks;
+                    } else {
+                        energySlowedTimer--;
+                    }
+                } else {
+                    IncrementEnergy(1);
+                }
             }
         }
     }
