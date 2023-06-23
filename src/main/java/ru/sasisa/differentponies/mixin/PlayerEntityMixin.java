@@ -1,5 +1,6 @@
 package ru.sasisa.differentponies.mixin;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -49,11 +50,16 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
     }*/
 
     @ModifyVariable(method= "getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F", at = @At(value = "RETURN", shift = At.Shift.BEFORE))
-    public float customBlockBreakingSpeed(float f)
+    public float customBlockBreakingSpeed(float f, BlockState blockState)
     {
         PlayerEntity player = (PlayerEntity)(Object)this;
 
-        if(race == Race.SEA) {
+        for(PassiveAbility ability : pony_abilities.Passives)
+        {
+            f *= ability.GetBlockBreakModifier(blockState, player);
+        }
+
+        /*if(race == Race.SEA) {
             if (player.isSubmergedIn(FluidTags.WATER)) {
                 f *= 5.0F;
 
@@ -76,7 +82,7 @@ public class PlayerEntityMixin implements IPlayerEntityMixin, ICloudsWalkable, I
             {
                 f /= 1.5F;
             }
-        }
+        }*/
 
         return f;
     }

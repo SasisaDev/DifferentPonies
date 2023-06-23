@@ -76,7 +76,8 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveFlySpeedModifier(1.5F),
                             new AbilityPassiveFly(),
-                            new AbilityPassiveSetEnergy(45 * 20)));
+                            new AbilityPassiveSetEnergy(45 * 20),
+                            new AbilityPassiveEnvironmentBreakingSpeedModifier(0.5F, AbilityPassiveEnvironmentBreakingSpeedModifier.Environment.ON_GROUND)));
         });
 
         manager.BindAbilitySet(Race.GRIFFON, () -> {
@@ -97,7 +98,8 @@ public class Differentponies implements ModInitializer {
                     // Passives
                     List.of(new AbilityPassiveHealthModifier(1.25F),
                             new AbilityPassiveFly(),
-                            new AbilityPassiveSetEnergy(45 * 20)));
+                            new AbilityPassiveSetEnergy(45 * 20),
+                            new AbilityPassiveEnvironmentBreakingSpeedModifier(1.3F, AbilityPassiveEnvironmentBreakingSpeedModifier.Environment.IN_AIR)));
         });
 
         manager.BindAbilitySet(Race.ZEBRA, () -> {

@@ -46,6 +46,8 @@ public class PassiveAbility {
         return 1;
     }
 
+    public float GetBlockBreakModifier(BlockState blockState, PlayerEntity player){ return 1;}
+
     public float GetDealtDamageModifier(PlayerEntity player, LivingEntity mob, DamageSource source, float damage) {
         return 1;
 
